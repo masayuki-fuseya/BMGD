@@ -140,7 +140,7 @@ void ObjectBase::Render()
 	RECT rect;
 
 
-	rect = { grp_x,grp_y,grp_w,grp_h };
+	rect = { grp_x,grp_y,grp_x + grp_w,grp_y + grp_h };
 	g_spriteBatch->Draw(handle->m_pTexture, Vector2(pos_x, pos_y),
 		&rect, Colors::White, 0.0f, Vector2(0, 0), Vector2(1, 1));
 }
