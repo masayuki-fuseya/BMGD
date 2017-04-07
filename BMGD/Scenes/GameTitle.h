@@ -8,6 +8,6 @@ class GameTitle :public GameBase
 public:
 	GameTitle();
 	~GameTitle();
-	void Update();
+	void Update(int* next_scene);
 	void Render();
 };

@@ -9,7 +9,7 @@ GameTitle::~GameTitle()
 {
 }
 
-void GameTitle::Update()
+void GameTitle::Update(int* next_scene)
 {
 }
 

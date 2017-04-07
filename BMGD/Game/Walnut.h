@@ -1,8 +1,9 @@
 #pragma once
-class Walnut
+
+#include "ObjectBase.h"
+class Walnut :public ObjectBase
 {
 public:
 	Walnut();
 	~Walnut();
 };
-

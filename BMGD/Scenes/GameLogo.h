@@ -8,6 +8,6 @@ class GameLogo :public GameBase
 public:
 	GameLogo();
 	~GameLogo();
-	void Update();
+	void Update(int* next_scene);
 	void Render();
 };

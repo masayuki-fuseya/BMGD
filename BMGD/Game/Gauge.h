@@ -1,5 +1,7 @@
 #pragma once
-class Gauge
+
+#include "ObjectBase.h"
+class Gauge :public ObjectBase
 {
 public:
 	Gauge();

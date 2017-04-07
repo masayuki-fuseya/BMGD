@@ -9,7 +9,7 @@ GamePlay::~GamePlay()
 {
 }
 
-void GamePlay::Update()
+void GamePlay::Update(int* next_scene)
 {
 }
 

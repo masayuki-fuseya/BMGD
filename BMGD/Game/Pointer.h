@@ -1,5 +1,7 @@
 #pragma once
-class Pointer
+
+#include "ObjectBase.h"
+class Pointer :public ObjectBase
 {
 public:
 	Pointer();

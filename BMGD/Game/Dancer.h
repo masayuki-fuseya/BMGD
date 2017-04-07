@@ -1,5 +1,7 @@
 #pragma once
-class Dancer
+
+#include "ObjectBase.h"
+class Dancer :public ObjectBase
 {
 public:
 	Dancer();

@@ -8,6 +8,6 @@ class GamePlay :public GameBase
 public:
 	GamePlay();
 	~GamePlay();
-	void Update();
+	void Update(int* next_scene);
 	void Render();
 };

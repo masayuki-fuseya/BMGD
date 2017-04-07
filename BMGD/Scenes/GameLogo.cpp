@@ -9,7 +9,7 @@ GameLogo::~GameLogo()
 {
 }
 
-void GameLogo::Update()
+void GameLogo::Update(int* next_scene)
 {
 }
 

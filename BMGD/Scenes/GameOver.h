@@ -8,6 +8,6 @@ class GameOver :public GameBase
 public:
 	GameOver();
 	~GameOver();
-	void Update();
+	void Update(int* next_scene);
 	void Render();
 };

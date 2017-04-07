@@ -15,6 +15,7 @@
 #include "DirectXTK.h"
 #include "ImaseLib\FPSTimer.h"
 #include <SimpleMath.h>
+#include "Game\GameMain.h"
 
 using namespace DirectX::SimpleMath;
 using namespace Microsoft::WRL;
@@ -66,7 +67,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	DirectXTK_Initialize();
 
 
-	//InitializeGame();		//ゲームの初期化処理
+	GameMain* main = new GameMain;		//ゲームの初期化処理
 
 
 	// メインループ
@@ -94,7 +95,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				break;
 			}
 
-			//UpdateGame();		//ゲームの更新処理
+			main->UpdateGame();		//ゲームの更新処理
 
 
 			// バックバッファのクリア
@@ -107,7 +108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			g_spriteBatch->Begin(SpriteSortMode_Deferred, g_pCommonStates->NonPremultiplied(), g_pCommonStates->PointClamp());
 
 
-			//RenderGame();		//ゲームの描画処理
+			main->RenderGame();		//ゲームの描画処理
 
 
 			// fpsの表示
@@ -124,7 +125,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 
-	//FinalizeGame();		//ゲームの後始末処理
+	delete main;			//ゲームの後始末処理
 
 
 	// DirectXデバイス周りの終了処理

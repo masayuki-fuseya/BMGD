@@ -9,7 +9,7 @@ GameOver::~GameOver()
 {
 }
 
-void GameOver::Update()
+void GameOver::Update(int* next_scene)
 {
 }
 

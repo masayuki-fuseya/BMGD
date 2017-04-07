@@ -5,7 +5,7 @@
 //!
 //! @date   2016/12/02
 //!
-//! @author M.Fuseya
+//! @author 
 //__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
 
 // 多重インクルードの防止 ==================================================
@@ -22,11 +22,9 @@
 #include <SimpleMath.h>
 #include "..\DirectXTK.h"
 #include "..\Texture.h"
+#include "..\Scenes\GameBase.h"
 
 // 定数の定義 ==============================================================
-
-// ゲームタイトル
-#define GAME_TITLE "thousand"
 
 // ゲーム画面
 #define SCREEN_WIDTH  640    // 幅[pixel]
@@ -47,24 +45,13 @@ class GameMain
 			OVER
 		};
 
-		enum DIRECTION
-		{
-			RIGHT,
-			LEFT,
-			UP,
-			DOWN
-		};
+		GameBase* m_base;
+		int m_scene;						//シーン管理
+		int m_next_scene;					//次のシーン
 
 	public:
-		int key_code;						//キー情報
-		int key_old;						//前フレームのキー情報
-
-		int scene;						//シーン管理
-		int NextScene;					//次のシーン
-		int init;							//初期化管理
-
 		// ゲームの初期化処理
-		void InitializeGame();
+		GameMain();
 
 		// ゲームの更新処理
 		void UpdateGame();
@@ -73,7 +60,7 @@ class GameMain
 		void RenderGame();
 
 		// ゲームの終了処理
-		void FinalizeGame();
+		~GameMain();
 };
 
 //　構造体宣言
@@ -91,8 +78,3 @@ class GameMain
 //	int state;			//状態
 //	bool reversal;		//左右反転
 //}OBJECT;				//オブジェクト用
-
-
-
-
-

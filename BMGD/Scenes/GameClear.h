@@ -8,6 +8,6 @@ class GameClear :public GameBase
 public:
 	GameClear();
 	~GameClear();
-	void Update();
+	void Update(int* next_scene);
 	void Render();
 };

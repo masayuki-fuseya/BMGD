@@ -5,26 +5,19 @@
 //!
 //! @date   2016/12/02		
 //!
-//! @author M.Fuseya	
+//! @author 	
 //__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
 
 // ヘッダファイルの読み込み ================================================
 #define _GAMEMAIN_
 #include "GameMain.h"
 
-#include "..\Scenes\GameBase.h"
 #include "..\Scenes\GameLogo.h"
 #include "..\Scenes\GameTitle.h"
 #include "..\Scenes\GameSelect.h"
 #include "..\Scenes\GamePlay.h"
 #include "..\Scenes\GameClear.h"
 #include "..\Scenes\GameOver.h"
-
-// プロトタイプ宣言 ====================================================
-
-
-// グローバル変数の定義 ====================================================
-GameBase* base;
 
 // 関数の定義 ==============================================================
 
@@ -35,8 +28,9 @@ GameBase* base;
 //!
 //! @return なし
 //----------------------------------------------------------------------
-void GameMain::InitializeGame()
+GameMain::GameMain()
 {
+	m_base = new GamePlay;
 }
 
 
@@ -51,42 +45,41 @@ void GameMain::InitializeGame()
 void GameMain::UpdateGame()
 {
 	//シーン管理
-	if (NextScene != scene)
+	if (m_next_scene != m_scene)
 	{
-		scene = NextScene;
+		m_scene = m_next_scene;
 		// シーン削除
-		delete base;
-		init = 0;
+		delete m_base;
 
 		//シーンごとの呼び出し
-		switch (scene)
+		switch (m_scene)
 		{
 		case LOGO:
-			base = new GameLogo();
+			m_base = new GameLogo();
 			break;
 
 		case TITLE:
-			base = new GameTitle();
+			m_base = new GameTitle();
 			break;
 
 		case SELECT:
-			base = new GameSelect();
+			m_base = new GameSelect();
 			break;
 
 		case PLAY:
-			base = new GamePlay();
+			m_base = new GamePlay();
 			break;
 
 		case CLEAR:
-			base = new GameClear();
+			m_base = new GameClear();
 			break;
 
 		case OVER:
-			base = new GameOver();
+			m_base = new GameOver();
 			break;
 		}
 	}
-	base->Update();
+	m_base->Update();
 }
 
 
@@ -100,7 +93,7 @@ void GameMain::UpdateGame()
 //----------------------------------------------------------------------
 void GameMain::RenderGame()
 {
-	base->Render();
+	m_base->Render();
 }
 
 
@@ -112,6 +105,11 @@ void GameMain::RenderGame()
 //!
 //! @return なし
 //----------------------------------------------------------------------
-void GameMain::FinalizeGame()
+GameMain::~GameMain()
 {
+	if (m_base)
+	{
+		delete m_base;
+		m_base = nullptr;
+	}
 }

@@ -9,7 +9,7 @@ GameClear::~GameClear()
 {
 }
 
-void GameClear::Update()
+void GameClear::Update(int* next_scene)
 {
 }
 

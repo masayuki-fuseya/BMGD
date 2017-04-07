@@ -9,7 +9,7 @@ GameSelect::~GameSelect()
 {
 }
 
-void GameSelect::Update()
+void GameSelect::Update(int* next_scene)
 {
 }
 

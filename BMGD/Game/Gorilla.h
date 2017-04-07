@@ -1,5 +1,7 @@
 #pragma once
-class Gorilla
+
+#include "ObjectBase.h"
+class Gorilla :public ObjectBase
 {
 public:
 	Gorilla();
