@@ -1,0 +1,24 @@
+﻿  Walnut.cpp
+  Texture.cpp
+  Pointer.cpp
+  Main.cpp
+  FPSTimer.cpp
+  Gorilla.cpp
+  Gauge.cpp
+  GameTitle.cpp
+c1xx : fatal error C1083: ソース ファイルを開けません。'Game\GameTitle.cpp':No such file or directory
+  GameSelect.cpp
+c1xx : fatal error C1083: ソース ファイルを開けません。'Game\GameSelect.cpp':No such file or directory
+  GamePlay.cpp
+c1xx : fatal error C1083: ソース ファイルを開けません。'Game\GamePlay.cpp':No such file or directory
+  GameOver.cpp
+c1xx : fatal error C1083: ソース ファイルを開けません。'Game\GameOver.cpp':No such file or directory
+  GameMain.cpp
+c:\users\s162155\documents\bmgd\bmgd\game\gamemain.cpp(14): fatal error C1083: include ファイルを開けません。'GameLogo.h':No such file or directory
+  GameLogo.cpp
+c1xx : fatal error C1083: ソース ファイルを開けません。'Game\GameLogo.cpp':No such file or directory
+  GameClear.cpp
+c1xx : fatal error C1083: ソース ファイルを開けません。'Game\GameClear.cpp':No such file or directory
+  DirectXTK.cpp
+  Direct3D.cpp
+  コードを生成中...

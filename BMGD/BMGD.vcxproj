@@ -87,29 +87,39 @@
   <ItemGroup>
     <ClCompile Include="Direct3D.cpp" />
     <ClCompile Include="DirectXTK.cpp" />
-    <ClCompile Include="Game\GameClear.cpp" />
-    <ClCompile Include="Game\GameLogo.cpp" />
+    <ClCompile Include="Game\Dancer.cpp" />
     <ClCompile Include="Game\GameMain.cpp" />
-    <ClCompile Include="Game\GameOver.cpp" />
-    <ClCompile Include="Game\GamePlay.cpp" />
-    <ClCompile Include="Game\GameSelect.cpp" />
-    <ClCompile Include="Game\GameTitle.cpp" />
+    <ClCompile Include="Game\Gauge.cpp" />
+    <ClCompile Include="Game\Gorilla.cpp" />
+    <ClCompile Include="Game\Pointer.cpp" />
+    <ClCompile Include="Game\Walnut.cpp" />
     <ClCompile Include="ImaseLib\FPSTimer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Scenes\GameClear.cpp" />
+    <ClCompile Include="Scenes\GameLogo.cpp" />
+    <ClCompile Include="Scenes\GameOver.cpp" />
+    <ClCompile Include="Scenes\GamePlay.cpp" />
+    <ClCompile Include="Scenes\GameSelect.cpp" />
+    <ClCompile Include="Scenes\GameTitle.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Direct3D.h" />
     <ClInclude Include="DirectXTK.h" />
-    <ClInclude Include="Game\GameBase.h" />
-    <ClInclude Include="Game\GameClear.h" />
-    <ClInclude Include="Game\GameLogo.h" />
+    <ClInclude Include="Game\Dancer.h" />
     <ClInclude Include="Game\GameMain.h" />
-    <ClInclude Include="Game\GameOver.h" />
-    <ClInclude Include="Game\GamePlay.h" />
-    <ClInclude Include="Game\GameSelect.h" />
-    <ClInclude Include="Game\GameTitle.h" />
+    <ClInclude Include="Game\Gauge.h" />
+    <ClInclude Include="Game\Gorilla.h" />
+    <ClInclude Include="Game\Pointer.h" />
+    <ClInclude Include="Game\Walnut.h" />
     <ClInclude Include="ImaseLib\FPSTimer.h" />
+    <ClInclude Include="Scenes\GameBase.h" />
+    <ClInclude Include="Scenes\GameClear.h" />
+    <ClInclude Include="Scenes\GameLogo.h" />
+    <ClInclude Include="Scenes\GameOver.h" />
+    <ClInclude Include="Scenes\GamePlay.h" />
+    <ClInclude Include="Scenes\GameSelect.h" />
+    <ClInclude Include="Scenes\GameTitle.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>

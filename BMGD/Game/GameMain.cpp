@@ -5,18 +5,23 @@
 //!
 //! @date   2016/12/02		
 //!
-//! @author 	
+//! @author M.Fuseya	
 //__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
 
 // ヘッダファイルの読み込み ================================================
 #define _GAMEMAIN_
 #include "GameMain.h"
-#include "GameLogo.h"
-#include "GameTitle.h"
-#include "GameSelect.h"
-#include "GamePlay.h"
-#include "GameClear.h"
-#include "GameOver.h"
+
+#include "..\Scenes\GameBase.h"
+#include "..\Scenes\GameLogo.h"
+#include "..\Scenes\GameTitle.h"
+#include "..\Scenes\GameSelect.h"
+#include "..\Scenes\GamePlay.h"
+#include "..\Scenes\GameClear.h"
+#include "..\Scenes\GameOver.h"
+
+// プロトタイプ宣言 ====================================================
+
 
 // グローバル変数の定義 ====================================================
 GameBase* base;

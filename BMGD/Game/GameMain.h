@@ -84,7 +84,6 @@ void FinalizeGame(void);
 
 
 // グローバル変数の定義 ====================================================
-
 EXTERN int g_key_code;						//キー情報
 EXTERN int g_key_old;						//前フレームのキー情報
 
