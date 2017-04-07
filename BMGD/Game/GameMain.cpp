@@ -79,7 +79,7 @@ void GameMain::UpdateGame()
 			break;
 		}
 	}
-	m_base->Update();
+	m_base->Update(&m_next_scene);
 }
 
 
