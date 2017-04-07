@@ -91,6 +91,7 @@
     <ClCompile Include="Game\GameMain.cpp" />
     <ClCompile Include="Game\Gauge.cpp" />
     <ClCompile Include="Game\Gorilla.cpp" />
+    <ClCompile Include="Game\ObjectBase.cpp" />
     <ClCompile Include="Game\Pointer.cpp" />
     <ClCompile Include="Game\Walnut.cpp" />
     <ClCompile Include="ImaseLib\FPSTimer.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Game\GameMain.h" />
     <ClInclude Include="Game\Gauge.h" />
     <ClInclude Include="Game\Gorilla.h" />
+    <ClInclude Include="Game\ObjectBase.h" />
     <ClInclude Include="Game\Pointer.h" />
     <ClInclude Include="Game\Walnut.h" />
     <ClInclude Include="ImaseLib\FPSTimer.h" />

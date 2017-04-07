@@ -33,60 +33,66 @@
 #define SCREEN_HEIGHT 480    // 高さ[pixel]
 
 
+class GameMain
+{
+	private:
+		//　列挙型宣言
+		enum SCENE
+		{
+			LOGO,
+			TITLE,
+			SELECT,
+			PLAY,
+			CLEAR,
+			OVER
+		};
+
+		enum DIRECTION
+		{
+			RIGHT,
+			LEFT,
+			UP,
+			DOWN
+		};
+
+	public:
+		int key_code;						//キー情報
+		int key_old;						//前フレームのキー情報
+
+		int scene;						//シーン管理
+		int NextScene;					//次のシーン
+		int init;							//初期化管理
+
+		// ゲームの初期化処理
+		void InitializeGame();
+
+		// ゲームの更新処理
+		void UpdateGame();
+
+		// ゲームの描画処理
+		void RenderGame();
+
+		// ゲームの終了処理
+		void FinalizeGame();
+};
+
 //　構造体宣言
-typedef struct tag_object
-{
-	Texture *handle;	//グラフィックハンドル 
-	int grp_x;			//元画像のｘ座標 
-	int grp_y;			//元画像のｙ座標 
-	int grp_w;			//元画像の幅 
-	int grp_h;			//元画像の高さ 
-	float pos_x;		//座標x 
-	float pos_y;		//座標y 
-	float spd_x;		//速度x 
-	float spd_y;		//速度y 
-	int state;			//状態
-	bool reversal;		//左右反転
-}OBJECT;				//オブジェクト用
-
-//　列挙型宣言
-enum SCENE
-{
-	LOGO,
-	TITLE,
-	SELECT,
-	PLAY,
-	CLEAR,
-	OVER
-};
-
-enum DIRECTION
-{
-	RIGHT,
-	LEFT,
-	UP,
-	DOWN
-};
-
-// 関数の宣言 ==============================================================
-
-// ゲームの初期化処理
-void InitializeGame(void);
-
-// ゲームの更新処理
-void UpdateGame(void);
-
-// ゲームの描画処理
-void RenderGame(void);
-
-// ゲームの終了処理
-void FinalizeGame(void);
+//typedef struct tag_object
+//{
+//	Texture *handle;	//グラフィックハンドル 
+//	int grp_x;			//元画像のｘ座標 
+//	int grp_y;			//元画像のｙ座標 
+//	int grp_w;			//元画像の幅 
+//	int grp_h;			//元画像の高さ 
+//	float pos_x;		//座標x 
+//	float pos_y;		//座標y 
+//	float spd_x;		//速度x 
+//	float spd_y;		//速度y 
+//	int state;			//状態
+//	bool reversal;		//左右反転
+//}OBJECT;				//オブジェクト用
 
 
-// グローバル変数の定義 ====================================================
-EXTERN int g_key_code;						//キー情報
-EXTERN int g_key_old;						//前フレームのキー情報
 
-EXTERN int g_scene;							//シーン管理
-EXTERN int g_NextScene;						//次のシーン
-EXTERN int g_init;							//初期化管理
+
+

@@ -35,7 +35,7 @@ GameBase* base;
 //!
 //! @return なし
 //----------------------------------------------------------------------
-void InitializeGame(void)
+void GameMain::InitializeGame()
 {
 }
 
@@ -48,18 +48,18 @@ void InitializeGame(void)
 //!
 //! @return なし
 //----------------------------------------------------------------------
-void UpdateGame(void)
+void GameMain::UpdateGame()
 {
 	//シーン管理
-	if (g_NextScene != g_scene)
+	if (NextScene != scene)
 	{
-		g_scene = g_NextScene;
+		scene = NextScene;
 		// シーン削除
 		delete base;
-		g_init = 0;
+		init = 0;
 
 		//シーンごとの呼び出し
-		switch (g_scene)
+		switch (scene)
 		{
 		case LOGO:
 			base = new GameLogo();
@@ -98,7 +98,7 @@ void UpdateGame(void)
 //!
 //! @return なし
 //----------------------------------------------------------------------
-void RenderGame(void)
+void GameMain::RenderGame()
 {
 	base->Render();
 }
@@ -112,6 +112,6 @@ void RenderGame(void)
 //!
 //! @return なし
 //----------------------------------------------------------------------
-void FinalizeGame(void)
+void GameMain::FinalizeGame()
 {
 }
