@@ -2,7 +2,11 @@
 #include "GamePlay.h"
 #include "..\DirectXTK.h"
 #include <SimpleMath.h>
+#include <fstream>
+#include <istream>
+#include <sstream>
 
+using namespace std;
 using namespace DirectX::SimpleMath;
 
 GamePlay::GamePlay()
@@ -13,16 +17,63 @@ GamePlay::GamePlay()
 
 	m_no = 0;
 	m_frame_cnt = 0;
+	m_music_no = 0;
 	pos_y = 200.0f;
 	m_a_and_s = true;
+
+	importData("test.csv");
+
+	for (int i = 0; i < 128; i++)
+	{
+		m_walnut[i] = nullptr;
+	}
 }
 
 GamePlay::~GamePlay()
 {
 }
 
+void GamePlay::importData(std::string filename)
+{
+	ifstream ifs(filename);
+	string str;
+	int i;
+
+	// “Ç‚ß‚È‚¢‚Æ‚«
+	if (!ifs)
+	{
+		for (i = 0; i < 128; i++)
+		{
+			m_music[i] = 0;
+		}
+		return;
+	}
+
+	i = 0;
+	while (getline(ifs, str))
+	{
+		string token;
+		istringstream stream(str);
+
+		while (getline(stream, token, ','))
+		{
+			m_music[i] = atoi(token.c_str());
+			i++;
+		}
+	}
+}
+
 void GamePlay::Update(int* next_scene)
 {
+
+	for (int i = 0; i < 128; i++)
+	{
+		if (m_walnut[i])
+		{
+			m_walnut[i]->Update();
+		}
+	}
+
 	m_frame_cnt++;
 	if (m_frame_cnt % 6 == 0)
 	{
@@ -44,10 +95,27 @@ void GamePlay::Update(int* next_scene)
 				m_a_and_s = !m_a_and_s;
 			}
 		}
-	}	
+	}
+
+	if (m_frame_cnt % 30 == 0)
+	{
+		if (m_music[m_music_no] != 0)
+		{
+			m_walnut[m_music_no] = new Walnut;
+		}
+		m_music_no++;
+	}
 }
 
 void GamePlay::Render()
 {
 	g_spriteBatch->Draw(m_texture[m_no]->m_pTexture, Vector2(200.0f, pos_y));
+
+	for (int i = 0; i < 128; i++)
+	{
+		if (m_walnut[i])
+		{
+			m_walnut[i]->Render();
+		}
+	}
 }
