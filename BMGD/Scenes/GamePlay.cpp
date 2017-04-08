@@ -65,6 +65,14 @@ void GamePlay::importData(std::string filename)
 
 void GamePlay::Update(int* next_scene)
 {
+	if (g_key.Z)
+	{
+
+	}
+	if (g_key.Space)
+	{
+
+	}
 
 	for (int i = 0; i < 128; i++)
 	{
