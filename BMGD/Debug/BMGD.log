@@ -1,3 +1,4 @@
-﻿  LINK : 前回のインクリメンタル リンクで C:\Users\s162002\Documents\BMGD\BMGD\Debug\BMGD.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
+﻿  Walnut.cpp
+cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
   BMGD.vcxproj -> C:\Users\s162002\Documents\BMGD\BMGD\Debug\BMGD.exe
   BMGD.vcxproj -> C:\Users\s162002\Documents\BMGD\BMGD\Debug\BMGD.pdb (Full PDB)
