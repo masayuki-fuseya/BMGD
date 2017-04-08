@@ -30,7 +30,7 @@
 //----------------------------------------------------------------------
 GameMain::GameMain()
 {
-	m_base = new GameSelect;
+	m_base = new GamePlay;
 }
 
 
