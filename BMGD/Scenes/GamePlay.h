@@ -6,17 +6,19 @@
 #include "..\Game\Walnut.h"
 #include <string>
 
+const int MAX_MUSIC = 128;
+
 class GamePlay :public GameBase
 {
 private:
 	Texture* m_texture[3];
-	Walnut* m_walnut[128];
-	int m_no;
+	Walnut* m_walnut[MAX_MUSIC];
+	int m_texture_no;
 	int m_frame_cnt;
-	int m_music[128];	// •ˆ–Ê
+	int m_music[MAX_MUSIC];	// •ˆ–Ê
 	int m_music_no;
 	float pos_y;
-	bool m_a_and_s;
+	bool m_is_beat;		// ’@‚­‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
 public:
 	GamePlay();
 	~GamePlay();

@@ -1,6 +1,7 @@
 // ヘッダファイルの読み込み ================================================
 #include "GamePlay.h"
 #include "..\DirectXTK.h"
+#include "..\Game\GameMain.h"
 #include <SimpleMath.h>
 #include <fstream>
 #include <istream>
@@ -15,15 +16,15 @@ GamePlay::GamePlay()
 	m_texture[1] = new Texture(L"Resources\\Images\\gorira2.png");
 	m_texture[2] = new Texture(L"Resources\\Images\\gorira3.png");
 
-	m_no = 0;
+	m_texture_no = 0;
 	m_frame_cnt = 0;
 	m_music_no = 0;
 	pos_y = 200.0f;
-	m_a_and_s = true;
+	m_is_beat = false;
 
 	importData("test.csv");
 
-	for (int i = 0; i < 128; i++)
+	for (int i = 0; i < MAX_MUSIC; i++)
 	{
 		m_walnut[i] = nullptr;
 	}
@@ -31,6 +32,22 @@ GamePlay::GamePlay()
 
 GamePlay::~GamePlay()
 {
+	for (int i = 0; i < 3; i++)
+	{
+		if (m_texture[i])
+		{
+			delete m_texture[i];
+			m_texture[i] = nullptr;
+		}
+	}
+	for (int i = 0; i < MAX_MUSIC; i++)
+	{
+		if (m_walnut[i])
+		{
+			delete m_walnut[i];
+			m_walnut[i] = nullptr;
+		}
+	}
 }
 
 void GamePlay::importData(std::string filename)
@@ -42,7 +59,7 @@ void GamePlay::importData(std::string filename)
 	// 読めないとき
 	if (!ifs)
 	{
-		for (i = 0; i < 128; i++)
+		for (i = 0; i < MAX_MUSIC; i++)
 		{
 			m_music[i] = 0;
 		}
@@ -65,16 +82,16 @@ void GamePlay::importData(std::string filename)
 
 void GamePlay::Update(int* next_scene)
 {
-	if (g_key.Z)
+	if(g_keyTracker->pressed.Z)
 	{
-
+		m_is_beat = true;
 	}
-	if (g_key.Space)
+	if(g_keyTracker->pressed.Space)
 	{
-
+		m_is_beat = true;
 	}
 
-	for (int i = 0; i < 128; i++)
+	for (int i = 0; i < MAX_MUSIC; i++)
 	{
 		if (m_walnut[i])
 		{
@@ -83,43 +100,51 @@ void GamePlay::Update(int* next_scene)
 	}
 
 	m_frame_cnt++;
-	if (m_frame_cnt % 6 == 0)
+	// ゴリラが手を叩く
+	if (m_frame_cnt % 3 == 0)
 	{
-		if (m_a_and_s)
+		if (m_is_beat)
 		{
-			m_no = (m_no + 1) % 3;
-			pos_y -= 50.0f;
-			if (m_no == 2)
+			m_texture_no = (m_texture_no + 1) % 5;
+			if (m_texture_no == 0)
 			{
-				m_a_and_s = !m_a_and_s;
-			}
-		}
-		else
-		{
-			m_no = (m_no + 2) % 3;
-			pos_y += 50.0f;
-			if (m_no == 0)
-			{
-				m_a_and_s = !m_a_and_s;
+				m_is_beat = false;
 			}
 		}
 	}
 
-	if (m_frame_cnt % 30 == 0)
+	if (m_frame_cnt % 20 == 0)
 	{
+		// クルミを出す
 		if (m_music[m_music_no] != 0)
 		{
-			m_walnut[m_music_no] = new Walnut;
+			m_walnut[m_music_no] = new Walnut(m_music[m_music_no]);
 		}
 		m_music_no++;
 	}
+
+	if (m_music_no == MAX_MUSIC)
+	{
+		*next_scene = GameMain::SELECT;
+	}
+
+	//if ()
+	//{
+	//	delete m_walnut[m_music_no];
+	//	m_walnut[m_music_no] = nullptr;
+	//}
 }
 
 void GamePlay::Render()
 {
-	g_spriteBatch->Draw(m_texture[m_no]->m_pTexture, Vector2(200.0f, pos_y));
+	int texture_no;
+	// 何番目のゴリラを表示するか
+	// 0→1→2→1→0の順番
+	texture_no = abs(m_texture_no % 3 - m_texture_no / 3);
 
-	for (int i = 0; i < 128; i++)
+	g_spriteBatch->Draw(m_texture[texture_no]->m_pTexture, Vector2(200.0f, pos_y));
+
+	for (int i = 0; i < MAX_MUSIC; i++)
 	{
 		if (m_walnut[i])
 		{

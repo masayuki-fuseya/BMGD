@@ -1,4 +1,8 @@
-﻿  Walnut.cpp
-cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
-  BMGD.vcxproj -> C:\Users\s162002\Documents\BMGD\BMGD\Debug\BMGD.exe
-  BMGD.vcxproj -> C:\Users\s162002\Documents\BMGD\BMGD\Debug\BMGD.pdb (Full PDB)
+﻿  GameSelect.cpp
+  GamePlay.cpp
+  Main.cpp
+  ObjectBase.cpp
+  GameMain.cpp
+  コードを生成中...
+  BMGD.vcxproj -> C:\Users\s162155\Documents\BMGD\BMGD\Debug\BMGD.exe
+  BMGD.vcxproj -> C:\Users\s162155\Documents\BMGD\BMGD\Debug\BMGD.pdb (Full PDB)

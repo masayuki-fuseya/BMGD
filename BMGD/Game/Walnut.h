@@ -4,6 +4,7 @@
 class Walnut :public ObjectBase
 {
 public:
-	Walnut();
+	Walnut(int kind);
 	~Walnut();
+
 };
