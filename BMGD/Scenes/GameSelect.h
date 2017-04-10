@@ -8,6 +8,7 @@ class GameSelect :public GameBase
 {
 private:
 	Texture* m_texture[1];
+	int m_selection;
 public:
 	GameSelect();
 	~GameSelect();
