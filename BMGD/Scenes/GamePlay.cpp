@@ -25,11 +25,8 @@ GamePlay::GamePlay()
 	m_walnut_cnt = 0;
 	m_music_no = 0;
 	pos_y = 200.0f;
-	//m_is_beat = false;
 
 	importData("test.csv");
-
-	//m_walnut = new Walnut*[MAX_MUSIC];
 
 	for (int i = 0; i < MAX_MUSIC; i++)
 	{
@@ -128,11 +125,11 @@ void GamePlay::Update(int* next_scene)
 	if (m_frame_cnt % 20 == 0)
 	{
 		// ƒNƒ‹ƒ~‚ðo‚·
-		if (m_music[m_music_no] != 2)
+		if (m_music[m_music_no] != 0)
 		{
 			m_walnut[m_music_no] = new Walnut;
 			m_walnut[m_music_no]->SetState(1);
-			m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * m_music[m_music_no]);
+			m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * (m_music[m_music_no] - 1));
 			m_music_no++;
 		}
 	}
