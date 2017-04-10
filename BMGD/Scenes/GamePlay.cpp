@@ -127,12 +127,6 @@ void GamePlay::Update(int* next_scene)
 	{
 		*next_scene = GameMain::SELECT;
 	}
-
-	//if ()
-	//{
-	//	delete m_walnut[m_music_no];
-	//	m_walnut[m_music_no] = nullptr;
-	//}
 }
 
 void GamePlay::Render()
