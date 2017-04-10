@@ -18,6 +18,7 @@ GamePlay::GamePlay()
 
 	m_pointer = new Pointer();
 	m_gorilla = new Gorilla();
+	
 
 	m_no = 0;
 	m_frame_cnt = 0;
@@ -25,12 +26,14 @@ GamePlay::GamePlay()
 	m_walnut_cnt = 0;
 	m_music_no = 0;
 	pos_y = 200.0f;
+	m_max_music = 0;
 
-	importData("test.csv");
+	importData("dededon.csv");
 
-	for (int i = 0; i < MAX_MUSIC; i++)
+	m_walnut = new Walnut*[m_max_music];
+	for (int i = 0; i < m_max_music; i++)
 	{
-		m_walnut[i] = nullptr;
+		m_walnut[i] = new Walnut();
 	}
 }
 
@@ -44,7 +47,7 @@ GamePlay::~GamePlay()
 			m_texture[i] = nullptr;
 		}
 	}
-	for (int i = 0; i < MAX_MUSIC; i++)
+	for (int i = 0; i < m_max_music; i++)
 	{
 		if (m_walnut[i])
 		{
@@ -73,10 +76,6 @@ void GamePlay::importData(std::string filename)
 	// 読めないとき
 	if (!ifs)
 	{
-		for (i = 0; i < MAX_MUSIC; i++)
-		{
-			m_music[i] = 0;
-		}
 		return;
 	}
 
@@ -88,8 +87,19 @@ void GamePlay::importData(std::string filename)
 
 		while (getline(stream, token, ','))
 		{
+			if (i == 0)
+			{
+				m_max_music = atoi(token.c_str());
+				m_music = new int[m_max_music];
+			}
+			
 			m_music[i] = atoi(token.c_str());
 			i++;
+
+		/*	if (m_music[i] == 3)
+			{
+				break;
+			}*/
 		}
 	}
 }
@@ -113,25 +123,19 @@ void GamePlay::Update(int* next_scene)
 		}
 	}
 	
-	for (int i = m_walnut_cnt; m_walnut[i] != nullptr; i++)
-	{
-		if (m_walnut[i] && m_walnut[i]->GetState() != 0)
-		{
-			m_walnut[i]->Update();
-		}
-	}
+	
 
 	m_frame_cnt++;
 	if (m_frame_cnt % 20 == 0)
 	{
 		// クルミを出す
-		if (m_music[m_music_no] != 0)
+	//	if (m_music[m_music_no] !=0)
 		{
-			m_walnut[m_music_no] = new Walnut;
 			m_walnut[m_music_no]->SetState(1);
 			m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * (m_music[m_music_no] - 1));
 			m_music_no++;
 		}
+		
 	}
 
 	if (m_frame_cnt % 2 == 0)
@@ -139,7 +143,7 @@ void GamePlay::Update(int* next_scene)
 		//ゴリラのアニメーション
 		if (m_gorilla->GetState() == 1)
 		{
-			m_gorilla_cnt = (m_gorilla_cnt + 1) % 5;
+			m_gorilla_cnt = (m_gorilla_cnt + 1) % 4;
 			int gorilla_cnt;
 			// 何番目のゴリラを表示するか
 			// 0→1→2→1→0の順番
@@ -154,7 +158,16 @@ void GamePlay::Update(int* next_scene)
 		}
 	}
 
-	if (m_music_no == MAX_MUSIC)
+//	for (int i = m_walnut_cnt; m_walnut[i] != nullptr; i++)
+	for (int i = m_walnut_cnt; i < m_max_music; i++)
+	{
+		if (m_walnut[i]->GetState() != 0)
+		{
+			m_walnut[i]->Update();
+		}
+	}
+
+	if (m_music_no == m_max_music)
 	{
 		*next_scene = GameMain::SELECT;
 	}
@@ -165,7 +178,7 @@ void GamePlay::Render()
 	//m_pointerの描画
 	m_pointer->Render();
 
-	for (int i = m_walnut_cnt; m_walnut[i] != nullptr; i++)
+	for (int i = m_walnut_cnt; i<m_max_music; i++)
 	{
 		if (m_walnut[i])
 		{

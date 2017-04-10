@@ -14,7 +14,7 @@ class GamePlay :public GameBase
 {
 private:
 	Texture* m_texture[3];
-	Walnut* m_walnut[MAX_MUSIC];
+	Walnut** m_walnut;
 	Pointer* m_pointer;
 	Gorilla* m_gorilla;
 
@@ -22,8 +22,9 @@ private:
 	int m_frame_cnt;
 	int m_gorilla_cnt;				//ゴリラアニメーションカウンタ
 	int m_walnut_cnt;				//クルミカウンタ
-	int m_music[MAX_MUSIC];				// 譜面
+	int* m_music;				// 譜面
 	int m_music_no;
+	int m_max_music;
 	float pos_y;
 	bool m_a_and_s;
 
