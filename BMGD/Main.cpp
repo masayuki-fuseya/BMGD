@@ -16,10 +16,6 @@
 #include "ImaseLib\FPSTimer.h"
 #include <SimpleMath.h>
 #include "Game\GameMain.h"
-#include <dsound.h>
-
-#pragma comment(lib, "dsound.lib")
-#pragma comment(lib, "winmm.lib")
 
 using namespace DirectX::SimpleMath;
 using namespace Microsoft::WRL;
@@ -41,20 +37,11 @@ static const int WINDOW_H = 480;
 HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-bool Init();
-bool CreatePrimaryBuffer();
-bool CreateSoundBuffer(LPDIRECTSOUNDBUFFER* dsb, const char* file);
-bool Exit();
-
 //////////////////////
 // グローバル変数	//
 //////////////////////
 HINSTANCE g_hInst = nullptr;	// インスタンスハンドル
 HWND g_hWnd = nullptr;	// ウインドウハンドル
-
-LPDIRECTSOUND8 g_lpDS = nullptr;
-LPDIRECTSOUNDBUFFER g_lpPrimary = nullptr;
-LPDIRECTSOUNDBUFFER g_lpSecondary = nullptr;
 
 //--------------------------------------------------------------------------------------
 // メイン
@@ -79,28 +66,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// DirectXTK関係の初期化
 	DirectXTK_Initialize();
 
-	// DirectSound初期化
-	if (!Init()) {
-		Exit();
-		return 0;
-	}
-
-	// プライマリサウンドバッファ
-	if (!CreatePrimaryBuffer()) {
-		Exit();
-		return 0;
-	}
-
-	// サウンドバッファ						WAVEファイルを指定
-	if (!CreateSoundBuffer(&g_lpSecondary, "Resources\\Sounds\\dededon.wav")) {
-		Exit();
-		return 0;
-	}
-
-
 	GameMain* main = new GameMain;		//ゲームの初期化処理
 
-	g_lpSecondary->Play(0, 0, 0);
+
 
 	// メインループ
 	MSG msg = { 0 };
@@ -158,9 +126,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 	delete main;			//ゲームの後始末処理
-
-
-	Exit();
 
 	// DirectXデバイス周りの終了処理
 	Direct3D_CleanupDevice();
@@ -252,193 +217,3 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-bool Init()
-{
-	HRESULT ret;
-
-	// COMの初期化
-	CoInitialize(nullptr);
-
-	// DirectSound8を作成
-	ret = DirectSoundCreate8(nullptr, &g_lpDS, nullptr);
-	if (FAILED(ret)) {
-		return false;
-	}
-
-	// 強調モード
-	ret = g_lpDS->SetCooperativeLevel(g_hWnd, DSSCL_EXCLUSIVE | DSSCL_PRIORITY);
-	if (FAILED(ret)) {
-		return false;
-	}
-
-	return true;
-}
-
-bool CreatePrimaryBuffer()
-{
-	HRESULT ret;
-	WAVEFORMATEX wf;
-
-	// プライマリサウンドバッファの作成
-	DSBUFFERDESC dsdesc;
-	ZeroMemory(&dsdesc, sizeof(DSBUFFERDESC));
-	dsdesc.dwSize = sizeof(DSBUFFERDESC);
-	dsdesc.dwFlags = DSBCAPS_PRIMARYBUFFER;
-	dsdesc.dwBufferBytes = 0;
-	dsdesc.lpwfxFormat = nullptr;
-	ret = g_lpDS->CreateSoundBuffer(&dsdesc, &g_lpPrimary, nullptr);
-	if (FAILED(ret)) {
-		return false;
-	}
-
-	// プライマリバッファのステータスを決定
-	wf.cbSize = sizeof(WAVEFORMATEX);
-	wf.wFormatTag = WAVE_FORMAT_PCM;
-	wf.nChannels = 2;
-	wf.nSamplesPerSec = 44100;
-	wf.wBitsPerSample = 16;
-	wf.nBlockAlign = wf.nChannels * wf.wBitsPerSample / 8;
-	wf.nAvgBytesPerSec = wf.nSamplesPerSec * wf.nBlockAlign;
-	ret = g_lpPrimary->SetFormat(&wf);
-	if (FAILED(ret)) {
-		return false;
-	}
-
-	return true;
-}
-
-bool CreateSoundBuffer(LPDIRECTSOUNDBUFFER* dsb, const char* file)
-{
-	HRESULT ret;
-	MMCKINFO mSrcWaveFile;
-	MMCKINFO mSrcWaveFmt;
-	MMCKINFO mSrcWaveData;
-	LPWAVEFORMATEX wf;
-
-	// WAVファイルをロード
-	HMMIO hSrc;
-	hSrc = mmioOpenA((LPSTR)file, nullptr, MMIO_ALLOCBUF | MMIO_READ | MMIO_COMPAT);
-	if (!hSrc) {
-		return false;
-	}
-
-	// 'WAVE'チャンクチェック
-	ZeroMemory(&mSrcWaveFile, sizeof(mSrcWaveFile));
-	ret = mmioDescend(hSrc, &mSrcWaveFile, nullptr, MMIO_FINDRIFF);
-	if (mSrcWaveFile.fccType != mmioFOURCC('W', 'A', 'V', 'E')) {
-		mmioClose(hSrc, 0);
-		return false;
-	}
-
-	// 'fmt 'チャンクチェック
-	ZeroMemory(&mSrcWaveFmt, sizeof(mSrcWaveFmt));
-	ret = mmioDescend(hSrc, &mSrcWaveFmt, &mSrcWaveFile, MMIO_FINDCHUNK);
-	if (mSrcWaveFmt.ckid != mmioFOURCC('f', 'm', 't', ' ')) {
-		mmioClose(hSrc, 0);
-		return false;
-	}
-
-	// ヘッダサイズの計算
-	int iSrcHeaderSize = mSrcWaveFmt.cksize;
-	if (iSrcHeaderSize<sizeof(WAVEFORMATEX))
-		iSrcHeaderSize = sizeof(WAVEFORMATEX);
-
-	// ヘッダメモリ確保
-	wf = (LPWAVEFORMATEX)malloc(iSrcHeaderSize);
-	if (!wf) {
-		mmioClose(hSrc, 0);
-		return false;
-	}
-	ZeroMemory(wf, iSrcHeaderSize);
-
-	// WAVEフォーマットのロード
-	ret = mmioRead(hSrc, (char*)wf, mSrcWaveFmt.cksize);
-	if (FAILED(ret)) {
-		free(wf);
-		mmioClose(hSrc, 0);
-		return false;
-	}
-
-
-	// fmtチャンクに戻る
-	mmioAscend(hSrc, &mSrcWaveFmt, 0);
-
-	// dataチャンクを探す
-	while (true) {
-		// 検索
-		ret = mmioDescend(hSrc, &mSrcWaveData, &mSrcWaveFile, 0);
-		if (FAILED(ret)) {
-			free(wf);
-			mmioClose(hSrc, 0);
-			return false;
-		}
-		if (mSrcWaveData.ckid == mmioStringToFOURCCA("data", 0))
-			break;
-		// 次のチャンクへ
-		ret = mmioAscend(hSrc, &mSrcWaveData, 0);
-	}
-
-
-	// サウンドバッファの作成
-	DSBUFFERDESC dsdesc;
-	ZeroMemory(&dsdesc, sizeof(DSBUFFERDESC));
-	dsdesc.dwSize = sizeof(DSBUFFERDESC);
-	dsdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC | DSBCAPS_LOCDEFER;
-	dsdesc.dwBufferBytes = mSrcWaveData.cksize;
-	dsdesc.lpwfxFormat = wf;
-	dsdesc.guid3DAlgorithm = DS3DALG_DEFAULT;
-	ret = g_lpDS->CreateSoundBuffer(&dsdesc, dsb, nullptr);
-	if (FAILED(ret)) {
-		free(wf);
-		mmioClose(hSrc, 0);
-		return false;
-	}
-
-	// ロック開始
-	LPVOID pMem1, pMem2;
-	DWORD dwSize1, dwSize2;
-	ret = (*dsb)->Lock(0, mSrcWaveData.cksize, &pMem1, &dwSize1, &pMem2, &dwSize2, 0);
-	if (FAILED(ret)) {
-		free(wf);
-		mmioClose(hSrc, 0);
-		return false;
-	}
-
-	// データ書き込み
-	mmioRead(hSrc, (char*)pMem1, dwSize1);
-	mmioRead(hSrc, (char*)pMem2, dwSize2);
-
-	// ロック解除
-	(*dsb)->Unlock(pMem1, dwSize1, pMem2, dwSize2);
-
-	// ヘッダ用メモリを開放
-	free(wf);
-
-	// WAVを閉じる
-	mmioClose(hSrc, 0);
-
-	return true;
-}
-
-bool Exit()
-{
-	if (g_lpSecondary) {
-		g_lpSecondary->Release();
-		g_lpSecondary = nullptr;
-	}
-
-	if (g_lpPrimary) {
-		g_lpPrimary->Release();
-		g_lpPrimary = nullptr;
-	}
-
-	if (g_lpDS) {
-		g_lpDS->Release();
-		g_lpDS = nullptr;
-	}
-
-	// COMの終了
-	CoUninitialize();
-
-	return true;
-}

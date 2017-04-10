@@ -19,6 +19,12 @@
 #include "..\Scenes\GameClear.h"
 #include "..\Scenes\GameOver.h"
 
+#include "..\ADX2Le.h"
+#include "CueSheet_0.h"
+
+#pragma comment(lib, "cri_ware_pcx86_LE_import.lib")
+
+
 // 関数の定義 ==============================================================
 
 //----------------------------------------------------------------------
@@ -31,6 +37,10 @@
 GameMain::GameMain()
 {
 	m_base = new GameSelect;
+	//読み込み
+	ADX2Le::Initialize("Resources\\Sounds\\NewBMGD.acf");
+	//ロード
+	ADX2Le::LoadAcb("Resources\\Sounds\\CueSheet_0.acb", "Resources\\Sounds\\CueSheet_0.awb");
 }
 
 
@@ -44,6 +54,8 @@ GameMain::GameMain()
 //----------------------------------------------------------------------
 void GameMain::UpdateGame()
 {
+	ADX2Le::Update();
+
 	//シーン管理
 	if (m_next_scene != m_scene)
 	{
@@ -107,6 +119,7 @@ void GameMain::RenderGame()
 //----------------------------------------------------------------------
 GameMain::~GameMain()
 {
+	ADX2Le::Finalize();
 	if (m_base)
 	{
 		delete m_base;

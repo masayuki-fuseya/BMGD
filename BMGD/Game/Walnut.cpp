@@ -10,7 +10,7 @@ Walnut::Walnut()
 	grp_h = 64;
 	pos_x = 660.0f;
 	pos_y = 136.0f;
-	spd_x = -3.0f;
+	spd_x = -5.0f;
 	spd_y = 0.0f;
 	state = 0;
 }

@@ -7,6 +7,9 @@
 #include <istream>
 #include <sstream>
 
+#include "..\ADX2Le.h"
+#include "..\Game\CueSheet_0.h"
+
 using namespace std;
 using namespace DirectX::SimpleMath;
 
@@ -35,6 +38,8 @@ GamePlay::GamePlay()
 	{
 		m_walnut[i] = new Walnut();
 	}
+
+	
 }
 
 GamePlay::~GamePlay()
@@ -126,16 +131,22 @@ void GamePlay::Update(int* next_scene)
 	
 
 	m_frame_cnt++;
+	if (m_frame_cnt == 200)
+	{
+		ADX2Le::Play(JAPARIPARK);
+	}
+
 	if (m_frame_cnt % 20 == 0)
 	{
 		// ƒNƒ‹ƒ~‚ðo‚·
-	//	if (m_music[m_music_no] !=0)
+		if (m_music_no == 0)
 		{
-			m_walnut[m_music_no]->SetState(1);
-			m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * (m_music[m_music_no] - 1));
-			m_music_no++;
+			
 		}
-		
+
+		m_walnut[m_music_no]->SetState(1);
+		m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * (m_music[m_music_no] - 1));
+		m_music_no++;
 	}
 
 	if (m_frame_cnt % 2 == 0)
