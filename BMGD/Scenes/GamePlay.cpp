@@ -15,22 +15,32 @@ GamePlay::GamePlay()
 	m_texture[1] = new Texture(L"Resources\\Images\\gorira2.png");
 	m_texture[2] = new Texture(L"Resources\\Images\\gorira3.png");
 
+	m_pointer = new Pointer();
+	m_gorilla = new Gorilla();
+
 	m_no = 0;
 	m_frame_cnt = 0;
+	m_gorilla_cnt = 0;
+	m_walnut_cnt = 0;
 	m_music_no = 0;
 	pos_y = 200.0f;
 	m_a_and_s = true;
 
 	importData("test.csv");
 
+	m_walnut = new Walnut*[128];
+
 	for (int i = 0; i < 128; i++)
 	{
 		m_walnut[i] = nullptr;
+		m_walnut[i] = new Walnut();
 	}
 }
 
 GamePlay::~GamePlay()
 {
+	delete m_pointer;
+	delete m_gorilla;
 }
 
 void GamePlay::importData(std::string filename)
@@ -65,13 +75,22 @@ void GamePlay::importData(std::string filename)
 
 void GamePlay::Update(int* next_scene)
 {
-
-	for (int i = 0; i < 128; i++)
+	if (g_keyTracker->pressed.Z)
 	{
-		if (m_walnut[i])
+		//ÉSÉäÉâÇÃStateÇÇPÇ…ïœçXÇ∑ÇÈ
+		m_gorilla->SetState(1);
+
+		//ÉNÉãÉ~Ç™pointerÇÃògÇÃíÜÇ…Ç†ÇÈèÍçá
+		if (m_walnut[m_walnut_cnt]->GetPosX() + m_walnut[m_walnut_cnt]->GetGrpW() < m_pointer->GetPosX() + m_pointer->GetGrpW())
 		{
-			m_walnut[i]->Update();
+			delete m_walnut[m_walnut_cnt];
+			m_walnut_cnt++;
 		}
+	}
+
+	if (g_key.Space)
+	{
+
 	}
 
 	m_frame_cnt++;
@@ -99,23 +118,59 @@ void GamePlay::Update(int* next_scene)
 
 	if (m_frame_cnt % 30 == 0)
 	{
-		if (m_music[m_music_no] != 0)
+		if (m_music[m_music_no] != 2)
 		{
 			m_walnut[m_music_no] = new Walnut;
+		//	m_walnut[m_music_no] = new Walnut();
+			m_walnut[m_music_no]->SetState(1);
+			m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * m_music[m_music_no] );
 		}
 		m_music_no++;
+	}
+
+	//ÉSÉäÉâÇÃÉAÉjÉÅÅ[ÉVÉáÉì
+	if (m_gorilla->GetState() == 1)
+	{
+		if (m_frame_cnt % 6 == 0)
+		{
+			m_gorilla_cnt++;
+			m_gorilla->SetGrpX(m_gorilla->GetGrpW() * m_gorilla_cnt);
+		}
+
+		//í@Ç´èIÇÌÇ¡ÇƒÇ¢ÇΩÇÁèâä˙èÛë‘Ç…ñﬂÇ∑
+		if (m_gorilla_cnt >= 3)
+		{
+			m_gorilla_cnt = 0;
+			m_gorilla->SetGrpX(0);
+			m_gorilla->SetState(0);
+		}
+	}
+
+	//çXêVèàóù
+	for (int i = m_walnut_cnt; i < 128; i++)
+	{
+		if (m_walnut[i]->GetState() != 0)
+		{
+			m_walnut[i]->Update();
+		}
 	}
 }
 
 void GamePlay::Render()
 {
+	//m_pointerÇÃï`âÊ
+	m_pointer->Render();
+
 	g_spriteBatch->Draw(m_texture[m_no]->m_pTexture, Vector2(200.0f, pos_y));
 
-	for (int i = 0; i < 128; i++)
+	for (int i = m_walnut_cnt; i < 128; i++)
 	{
 		if (m_walnut[i])
 		{
 			m_walnut[i]->Render();
 		}
 	}
+
+	//m_gorillaÇÃï`âÊ
+	m_gorilla->Render();
 }

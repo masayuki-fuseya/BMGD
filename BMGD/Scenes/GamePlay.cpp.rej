@@ -1,0 +1,9 @@
+diff a/BMGD/Scenes/GamePlay.cpp b/BMGD/Scenes/GamePlay.cpp	(rejected hunks)
+@@ -85,7 +85,6 @@
+ 		//�N���~��pointer�̘g�̒��ɂ���ꍇ
+ 		if (m_walnut[m_walnut_cnt]->GetPosX() + m_walnut[m_walnut_cnt]->GetGrpW() < m_pointer->GetPosX() + m_pointer->GetGrpW())
+ 		{
+-			m_walnut[i]->Update();
+ 			delete m_walnut[m_walnut_cnt];
+ 			m_walnut_cnt++;
+ 		}

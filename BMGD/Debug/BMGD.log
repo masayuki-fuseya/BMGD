@@ -1,6 +1,21 @@
-﻿  スキップ中... (関連する変更は検出されませんでした)
-  Texture.cpp
+﻿  Texture.cpp
+  GameTitle.cpp
+  GameSelect.cpp
+  GamePlay.cpp
+  GameOver.cpp
+  GameLogo.cpp
+  GameClear.cpp
+  Main.cpp
   FPSTimer.cpp
-  LINK : 前回のインクリメンタル リンクで C:\Users\s162199\Documents\BMGD\BMGD\Debug\BMGD.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
+  Walnut.cpp
+  Pointer.cpp
+  ObjectBase.cpp
+  Gorilla.cpp
+  Gauge.cpp
+  GameMain.cpp
+  Dancer.cpp
+  DirectXTK.cpp
+  Direct3D.cpp
+  コードを生成中...
   BMGD.vcxproj -> C:\Users\s162199\Documents\BMGD\BMGD\Debug\BMGD.exe
   BMGD.vcxproj -> C:\Users\s162199\Documents\BMGD\BMGD\Debug\BMGD.pdb (Full PDB)

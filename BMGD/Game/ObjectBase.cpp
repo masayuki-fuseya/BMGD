@@ -75,6 +75,7 @@ void ObjectBase::SetPosX(float x)
 //pos_x‚ðŽæ“¾‚·‚é
 float ObjectBase::GetPosX()
 {
+
 	return pos_x;
 }
 
