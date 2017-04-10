@@ -1,0 +1,16 @@
+diff a/BMGD/Game/Walnut.cpp b/BMGD/Game/Walnut.cpp	(rejected hunks)
+@@ -1,6 +1,14 @@
+ #include "Walnut.h"
+ 
+ 
++//**********************************************************************
++//!	@brief		�R���X�g���N�^
++//!
++//!	@param[in]	�N���~�̎��(1:�Z���N���~�@2:�����N���~)
++//!
++//!	@return		�Ȃ�
++//**********************************************************************
++Walnut::Walnut(int kind)
+ {
+ 	handle = new Texture(L"Resources\\Images\\kurumi2.png");
+ 	grp_x = (kind - 1) * 64;

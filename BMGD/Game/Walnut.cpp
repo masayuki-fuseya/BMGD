@@ -1,7 +1,6 @@
 #include "Walnut.h"
 
 
-
 Walnut::Walnut()
 {
 	handle = new Texture(L"Resources\\Images\\kurumi2.png");

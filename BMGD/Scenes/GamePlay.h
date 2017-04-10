@@ -8,11 +8,13 @@
 #include "..\Game\Gorilla.h"
 #include <string>
 
+const int MAX_MUSIC = 128;
+
 class GamePlay :public GameBase
 {
 private:
 	Texture* m_texture[3];
-	Walnut** m_walnut;
+	Walnut* m_walnut[MAX_MUSIC];
 	Pointer* m_pointer;
 	Gorilla* m_gorilla;
 
@@ -20,11 +22,13 @@ private:
 	int m_frame_cnt;
 	int m_gorilla_cnt;				//ゴリラアニメーションカウンタ
 	int m_walnut_cnt;				//クルミカウンタ
-	int m_music[128];				// 譜面
+	int m_music[MAX_MUSIC];				// 譜面
 	int m_music_no;
 	float pos_y;
 	bool m_a_and_s;
 
+	//Walnut* m_walnut;
+	//bool m_is_beat;		// 叩くかどうかのフラグ
 public:
 	GamePlay();
 	~GamePlay();

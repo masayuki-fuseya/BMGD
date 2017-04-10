@@ -34,6 +34,11 @@
 class GameMain
 {
 	private:
+		GameBase* m_base;
+		int m_scene;						//シーン管理
+		int m_next_scene;					//次のシーン
+
+	public:
 		//　列挙型宣言
 		enum SCENE
 		{
@@ -45,11 +50,6 @@ class GameMain
 			OVER
 		};
 
-		GameBase* m_base;
-		int m_scene;						//シーン管理
-		int m_next_scene;					//次のシーン
-
-	public:
 		// ゲームの初期化処理
 		GameMain();
 

@@ -1,6 +1,7 @@
 // ヘッダファイルの読み込み ================================================
 #include "GamePlay.h"
 #include "..\DirectXTK.h"
+#include "..\Game\GameMain.h"
 #include <SimpleMath.h>
 #include <fstream>
 #include <istream>
@@ -24,23 +25,46 @@ GamePlay::GamePlay()
 	m_walnut_cnt = 0;
 	m_music_no = 0;
 	pos_y = 200.0f;
-	m_a_and_s = true;
+	//m_is_beat = false;
 
 	importData("test.csv");
 
-	m_walnut = new Walnut*[128];
+	//m_walnut = new Walnut*[MAX_MUSIC];
 
-	for (int i = 0; i < 128; i++)
+	for (int i = 0; i < MAX_MUSIC; i++)
 	{
 		m_walnut[i] = nullptr;
-		m_walnut[i] = new Walnut();
 	}
 }
 
 GamePlay::~GamePlay()
 {
-	delete m_pointer;
-	delete m_gorilla;
+	for (int i = 0; i < 3; i++)
+	{
+		if (m_texture[i])
+		{
+			delete m_texture[i];
+			m_texture[i] = nullptr;
+		}
+	}
+	for (int i = 0; i < MAX_MUSIC; i++)
+	{
+		if (m_walnut[i])
+		{
+			delete m_walnut[i];
+			m_walnut[i] = nullptr;
+		}
+	}
+	if (m_pointer)
+	{
+		delete m_pointer;
+		m_pointer = nullptr;
+	}
+	if (m_gorilla)
+	{
+		delete m_gorilla;
+		m_gorilla = nullptr;
+	}
 }
 
 void GamePlay::importData(std::string filename)
@@ -52,7 +76,7 @@ void GamePlay::importData(std::string filename)
 	// 読めないとき
 	if (!ifs)
 	{
-		for (i = 0; i < 128; i++)
+		for (i = 0; i < MAX_MUSIC; i++)
 		{
 			m_music[i] = 0;
 		}
@@ -80,79 +104,62 @@ void GamePlay::Update(int* next_scene)
 		//ゴリラのStateを１に変更する
 		m_gorilla->SetState(1);
 
-		//クルミがpointerの枠の中にある場合
-		if (m_walnut[m_walnut_cnt]->GetPosX() + m_walnut[m_walnut_cnt]->GetGrpW() < m_pointer->GetPosX() + m_pointer->GetGrpW())
+		if (m_walnut[m_walnut_cnt])
 		{
-			delete m_walnut[m_walnut_cnt];
-			m_walnut_cnt++;
-		}
-	}
-
-	if (g_key.Space)
-	{
-
-	}
-
-	m_frame_cnt++;
-	if (m_frame_cnt % 6 == 0)
-	{
-		if (m_a_and_s)
-		{
-			m_no = (m_no + 1) % 3;
-			pos_y -= 50.0f;
-			if (m_no == 2)
+			//クルミがpointerの枠の中にある場合
+			if (m_walnut[m_walnut_cnt]->GetPosX() + m_walnut[m_walnut_cnt]->GetGrpW() < m_pointer->GetPosX() + m_pointer->GetGrpW())
 			{
-				m_a_and_s = !m_a_and_s;
-			}
-		}
-		else
-		{
-			m_no = (m_no + 2) % 3;
-			pos_y += 50.0f;
-			if (m_no == 0)
-			{
-				m_a_and_s = !m_a_and_s;
+				delete m_walnut[m_walnut_cnt];
+				m_walnut[m_walnut_cnt] = nullptr;
+				m_walnut_cnt++;
 			}
 		}
 	}
-
-	if (m_frame_cnt % 30 == 0)
+	
+	for (int i = m_walnut_cnt; m_walnut[i] != nullptr; i++)
 	{
-		if (m_music[m_music_no] != 2)
-		{
-			m_walnut[m_music_no] = new Walnut;
-		//	m_walnut[m_music_no] = new Walnut();
-			m_walnut[m_music_no]->SetState(1);
-			m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * m_music[m_music_no] );
-		}
-		m_music_no++;
-	}
-
-	//ゴリラのアニメーション
-	if (m_gorilla->GetState() == 1)
-	{
-		if (m_frame_cnt % 6 == 0)
-		{
-			m_gorilla_cnt++;
-			m_gorilla->SetGrpX(m_gorilla->GetGrpW() * m_gorilla_cnt);
-		}
-
-		//叩き終わっていたら初期状態に戻す
-		if (m_gorilla_cnt >= 3)
-		{
-			m_gorilla_cnt = 0;
-			m_gorilla->SetGrpX(0);
-			m_gorilla->SetState(0);
-		}
-	}
-
-	//更新処理
-	for (int i = m_walnut_cnt; i < 128; i++)
-	{
-		if (m_walnut[i]->GetState() != 0)
+		if (m_walnut[i] && m_walnut[i]->GetState() != 0)
 		{
 			m_walnut[i]->Update();
 		}
+	}
+
+	m_frame_cnt++;
+	if (m_frame_cnt % 20 == 0)
+	{
+		// クルミを出す
+		if (m_music[m_music_no] != 2)
+		{
+			m_walnut[m_music_no] = new Walnut;
+			m_walnut[m_music_no]->SetState(1);
+			m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * m_music[m_music_no]);
+			m_music_no++;
+		}
+	}
+
+	if (m_frame_cnt % 2 == 0)
+	{
+		//ゴリラのアニメーション
+		if (m_gorilla->GetState() == 1)
+		{
+			m_gorilla_cnt = (m_gorilla_cnt + 1) % 5;
+			int gorilla_cnt;
+			// 何番目のゴリラを表示するか
+			// 0→1→2→1→0の順番
+			gorilla_cnt = abs(m_gorilla_cnt % 3 - m_gorilla_cnt / 3);
+
+			m_gorilla->SetGrpX(m_gorilla->GetGrpW() * gorilla_cnt);
+
+			if (gorilla_cnt == 0)
+			{
+				m_gorilla->SetState(0);
+			}
+		}
+	}
+
+	if (m_music_no == MAX_MUSIC)
+	{
+		*next_scene = GameMain::SELECT;
 	}
 }
 
@@ -161,9 +168,7 @@ void GamePlay::Render()
 	//m_pointerの描画
 	m_pointer->Render();
 
-	g_spriteBatch->Draw(m_texture[m_no]->m_pTexture, Vector2(200.0f, pos_y));
-
-	for (int i = m_walnut_cnt; i < 128; i++)
+	for (int i = m_walnut_cnt; m_walnut[i] != nullptr; i++)
 	{
 		if (m_walnut[i])
 		{
