@@ -8,9 +8,9 @@ Walnut::Walnut()
 	grp_y = 0;
 	grp_w = 64;
 	grp_h = 64;
-	pos_x = 660.0f;
+	pos_x = 640.0f;
 	pos_y = 136.0f;
-	spd_x = -4.5f;
+	spd_x = -6.0f;
 	spd_y = 0.0f;
 	state = 0;
 }

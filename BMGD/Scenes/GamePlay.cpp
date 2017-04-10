@@ -172,8 +172,8 @@ void GamePlay::Update(int* next_scene)
 		}
 	}
 
-	m_frame_cnt++;
-	if (m_frame_cnt == 120)
+	
+	if (m_frame_cnt == 0)
 	{
 		switch (m_selection)
 		{
@@ -191,16 +191,18 @@ void GamePlay::Update(int* next_scene)
 		}
 		
 	}
+	m_frame_cnt++;
 
-	if (m_frame_cnt % 12 == 0)
+	if (m_frame_cnt % 11 == 0)//コイツ
 	{
-		if (!(m_walnut_cnt == m_max_music))
+		if (!(m_music_no == m_max_music))
 		{
 			// クルミを出す
 			if (m_music[m_music_no] == 1)
 			{
 				m_walnut[m_music_no]->SetState(1);
 			}
+		
 			if (m_music[m_music_no] == 2)
 			{
 				m_walnut[m_music_no]->SetState(2);
@@ -240,9 +242,9 @@ void GamePlay::Update(int* next_scene)
 		}
 	}
 
-	if (m_walnut_cnt == m_max_music)
+	if (m_music_no == m_max_music)
 	{
-		*next_scene = GameMain::SELECT;
+		*next_scene = GameMain::CLEAR;
 	}
 
 	
