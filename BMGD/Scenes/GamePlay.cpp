@@ -31,7 +31,23 @@ GamePlay::GamePlay()
 	pos_y = 200.0f;
 	m_max_music = 0;
 
-	importData("dededon.csv");
+	m_selection = 2;
+
+	switch (m_selection)
+	{
+		case 0:
+			importData("dededon.csv");
+			break;
+
+		case 1:
+			importData("Hallelujah.csv");
+			break;
+
+		case 2:
+			importData("japaripark.csv");
+			break;
+	}
+	
 	
 	m_walnut = new Walnut*[m_max_music];
 	for (int i = 0; i < m_max_music; i++)
@@ -94,7 +110,7 @@ void GamePlay::importData(std::string filename)
 		{
 			if (i == 0)
 			{
-				m_max_music = 160;
+				m_max_music = atoi(token.c_str());
 				m_music = new int[m_max_music];
 			}
 			
@@ -113,40 +129,86 @@ void GamePlay::Update(int* next_scene)
 {
 	if (g_keyTracker->pressed.Z)
 	{
+		ADX2Le::Play(DON);
+	}
+
+	if (g_keyTracker->pressed.Space)
+	{
+		ADX2Le::Play(KA);
+	}
+
+	if ((g_keyTracker->pressed.Z)|| (g_keyTracker->pressed.Space))
+	{
 		//ゴリラのStateを１に変更する
 		m_gorilla->SetState(1);
 
-		if (m_walnut[m_walnut_cnt])
+		for (int i = m_walnut_cnt; i < m_max_music; i++)
 		{
 			//クルミがpointerの枠の中にある場合
-			if (m_walnut[m_walnut_cnt]->GetPosX() + m_walnut[m_walnut_cnt]->GetGrpW() < m_pointer->GetPosX() + m_pointer->GetGrpW())
+			if ((m_walnut[i]->GetPosX() < m_pointer->GetPosX() + 128) &&
+				(m_walnut[i]->GetPosX() + m_walnut[i]->GetGrpW() > m_pointer->GetPosX()))
 			{
-				delete m_walnut[m_walnut_cnt];
-				m_walnut[m_walnut_cnt] = nullptr;
-				m_walnut_cnt++;
+				if ((g_keyTracker->pressed.Z) && (m_walnut[i]->GetState() == 1))
+				{
+					m_walnut[i]->SetState(0);
+					
+				}
+				if ((g_keyTracker->pressed.Space) && (m_walnut[i]->GetState() == 2))
+				{
+					m_walnut[i]->SetState(0);
+				
+				}
 			}
 		}
 	}
 	
 	
 
-	m_frame_cnt++;
-	if (m_frame_cnt == 200)
+	for (int i = m_walnut_cnt; i < m_max_music; i++)
 	{
-		ADX2Le::Play(JAPARIPARK);
+		if (m_walnut[i]->GetPosX() + m_walnut[i]->GetGrpW() < -64)
+		{
+			m_walnut_cnt++;
+		}
 	}
 
-	if (m_frame_cnt % 20 == 0)
+	m_frame_cnt++;
+	if (m_frame_cnt == 120)
 	{
-		// クルミを出す
-		if (m_music_no == 0)
+		switch (m_selection)
 		{
-			
-		}
+			case 0:
+				ADX2Le::Play(DEDEDON);
+				break;
 
-		m_walnut[m_music_no]->SetState(1);
-		m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * (m_music[m_music_no] - 1));
-		m_music_no++;
+			case 1:
+				ADX2Le::Play(SERORI);
+				break;
+
+			case 2:
+				ADX2Le::Play(JAPARIPARK);
+				break;
+		}
+		
+	}
+
+	if (m_frame_cnt % 12 == 0)
+	{
+		if (!(m_walnut_cnt == m_max_music))
+		{
+			// クルミを出す
+			if (m_music[m_music_no] == 1)
+			{
+				m_walnut[m_music_no]->SetState(1);
+			}
+			if (m_music[m_music_no] == 2)
+			{
+				m_walnut[m_music_no]->SetState(2);
+			}
+
+			m_walnut[m_music_no]->SetGrpX(m_walnut[m_music_no]->GetGrpW() * (m_music[m_music_no] - 1));
+			m_music_no++;
+		}
 	}
 
 	if (m_frame_cnt % 2 == 0)
@@ -178,10 +240,12 @@ void GamePlay::Update(int* next_scene)
 		}
 	}
 
-	if (m_music_no == m_max_music)
+	if (m_walnut_cnt == m_max_music)
 	{
 		*next_scene = GameMain::SELECT;
 	}
+
+	
 }
 
 void GamePlay::Render()
@@ -191,7 +255,7 @@ void GamePlay::Render()
 
 	for (int i = m_walnut_cnt; i<m_max_music; i++)
 	{
-		if (m_walnut[i])
+		if (m_walnut[i]->GetState() != 0)
 		{
 			m_walnut[i]->Render();
 		}

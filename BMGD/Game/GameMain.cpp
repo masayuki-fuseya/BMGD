@@ -36,7 +36,7 @@
 //----------------------------------------------------------------------
 GameMain::GameMain()
 {
-	m_base = new GameSelect;
+	m_base = new GameTitle;
 	//ì«Ç›çûÇ›
 	ADX2Le::Initialize("Resources\\Sounds\\NewBMGD.acf");
 	//ÉçÅ[Éh

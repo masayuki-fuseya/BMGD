@@ -25,6 +25,7 @@ private:
 	int* m_music;				// •ˆ–Ê
 	int m_music_no;
 	int m_max_music;
+	int m_selection;
 	float pos_y;
 	bool m_a_and_s;
 

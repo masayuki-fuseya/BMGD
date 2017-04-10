@@ -2,9 +2,13 @@
 #pragma once
 
 #include "GameBase.h"
+#include "..\Texture.h"
 
 class GameTitle :public GameBase
 {
+private:
+	Texture* m_texture;
+
 public:
 	GameTitle();
 	~GameTitle();
