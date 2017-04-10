@@ -100,7 +100,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	GameMain* main = new GameMain;		//ゲームの初期化処理
 
-	//g_lpSecondary->Play(0, 0, 0);
+	g_lpSecondary->Play(0, 0, 0);
 
 	// メインループ
 	MSG msg = { 0 };

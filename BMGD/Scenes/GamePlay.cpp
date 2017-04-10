@@ -29,7 +29,7 @@ GamePlay::GamePlay()
 	m_max_music = 0;
 
 	importData("dededon.csv");
-
+	
 	m_walnut = new Walnut*[m_max_music];
 	for (int i = 0; i < m_max_music; i++)
 	{
@@ -89,7 +89,7 @@ void GamePlay::importData(std::string filename)
 		{
 			if (i == 0)
 			{
-				m_max_music = atoi(token.c_str());
+				m_max_music = 160;
 				m_music = new int[m_max_music];
 			}
 			
