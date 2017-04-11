@@ -30,6 +30,7 @@
 #define SCREEN_WIDTH  640    // 幅[pixel]
 #define SCREEN_HEIGHT 480    // 高さ[pixel]
 
+EXTERN int g_selection;
 
 class GameMain
 {
@@ -37,6 +38,7 @@ class GameMain
 		GameBase* m_base;
 		int m_scene;						//シーン管理
 		int m_next_scene;					//次のシーン
+		int m_selection;
 
 	public:
 		//　列挙型宣言

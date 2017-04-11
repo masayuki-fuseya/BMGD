@@ -37,6 +37,7 @@ void GameSelect::Update(int* next_scene)
 	}
 	if (g_keyTracker->pressed.Enter)
 	{
+		g_selection = m_selection;
 		*next_scene = GameMain::PLAY;
 	}
 	

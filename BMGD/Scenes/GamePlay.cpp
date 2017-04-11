@@ -31,7 +31,7 @@ GamePlay::GamePlay()
 	pos_y = 200.0f;
 	m_max_music = 0;
 
-	m_selection = 2;
+	m_selection = g_selection;
 
 	switch (m_selection)
 	{
@@ -137,7 +137,7 @@ void GamePlay::Update(int* next_scene)
 		ADX2Le::Play(KA);
 	}
 
-	if ((g_keyTracker->pressed.Z)|| (g_keyTracker->pressed.Space))
+	if ((g_keyTracker->pressed.Z) || (g_keyTracker->pressed.Space))
 	{
 		//ƒSƒŠƒ‰‚ÌState‚ð‚P‚É•ÏX‚·‚é
 		m_gorilla->SetState(1);
@@ -151,18 +151,18 @@ void GamePlay::Update(int* next_scene)
 				if ((g_keyTracker->pressed.Z) && (m_walnut[i]->GetState() == 1))
 				{
 					m_walnut[i]->SetState(0);
-					
+
 				}
 				if ((g_keyTracker->pressed.Space) && (m_walnut[i]->GetState() == 2))
 				{
 					m_walnut[i]->SetState(0);
-				
+
 				}
 			}
 		}
 	}
-	
-	
+
+
 
 	for (int i = m_walnut_cnt; i < m_max_music; i++)
 	{
@@ -172,24 +172,27 @@ void GamePlay::Update(int* next_scene)
 		}
 	}
 
+
 	
-	if (m_frame_cnt == 0)
+	switch (m_selection)
 	{
-		switch (m_selection)
+	case 0:
+		if (m_frame_cnt == 140)
 		{
-			case 0:
-				ADX2Le::Play(DEDEDON);
-				break;
-
-			case 1:
-				ADX2Le::Play(SERORI);
-				break;
-
-			case 2:
-				ADX2Le::Play(JAPARIPARK);
-				break;
+			ADX2Le::Play(DEDEDON);
 		}
-		
+		break;
+
+	case 1:
+		//ADX2Le::Play(SERORI);
+		break;
+
+	case 2:
+		if (m_frame_cnt == 0)
+		{
+			ADX2Le::Play(JAPARIPARK);
+		}
+		break;
 	}
 	m_frame_cnt++;
 
